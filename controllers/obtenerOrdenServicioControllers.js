@@ -54,7 +54,7 @@ async function obtenerOrdenServicio(req, res) {
     } catch (error) {
         // Manejamos cualquier error ocurrido durante el proceso
         logger.error(`Error en obtenerOrdenServicio: ${error.message}`);
-        res.status(500).json({ error: 'Hubo un error en el servidor' });
+        res.status(500).json({ error: `Error en el servidor :  ${error.message}`  });
         throw error;
     }
 }
