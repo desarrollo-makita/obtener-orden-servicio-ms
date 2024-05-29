@@ -5,7 +5,6 @@ async function obtenerOrdenServicio(req, res) {
     try {
         
         logger.info(`Iniciamos la funcion obtenerOrdenServicio`); 
-        console.log(req.body);
         const data = req.body;
         const osArray = [];
         const osSet = new Set();

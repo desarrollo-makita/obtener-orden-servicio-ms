@@ -1,191 +1,64 @@
 module.exports = {
-    obtenerPedidosControllers: {
-        itemList: [
-        {
-            pedido_item: 106973043,
-            referencia: '629937-8',
-            qtde: '1',
-            preco: '14462',
-            ipi: '0',
-            os: '66227517',
-            qtde_cancelada: '0',
-            qtde_faturada: '1'
-        },
-        {
-            pedido_item: 107248891,
-            referencia: '158472-4',
-            qtde: '1',
-            preco: '6195',
-            ipi: '0',
-            os: '66283533',
-            qtde_cancelada: '0',
-            qtde_faturada: '0'
+    request:{
+        body:{
+            "pedidos": [
+                {
+                    "pedido": 49091285,
+                    "itens": [
+                        {"os": "66284227"},
+                    ]
+                 }
+            ]
         }
-        ],
-        pedidos: [
-        {
-            pedido: 48935877,
-            data: '2024-04-22 16:47:02.223256-03',
-            cnpj: '768900980     ',
-            codigo: 'GAR',
-            codigo_condicao: 'GAR',
-            entrega: null,
-            exportado: null,
-            tipo_frete: null,
-            status_pedido: 4,
-            troca: null,
-            status_descricao: 'Faturado Integral',
-            transportadora: null,
-            codigo_interno_transportadora: null,
-            itens: [Array],
-            valor_adicional_fabricante: 0,
-            valor_desconto_fabricante: 0,
-            tipoDocumento: 'NOTA DE VTA INTERNA'
+    },
+    
+    obtenerOrdenServicio:{
+        data:{
+            "os": [
+                {
+                    "cnpj": "76279534-5",
+                    "codigo_posto": "76279534-5",
+                    "consumidor_bairro": "",
+                    "consumidor_cep": "",
+                    "consumidor_cidade": "ANTOFAGASTA",
+                    "consumidor_complemento": "",
+                    "consumidor_email": "fernando_nakata@hotmail.com",
+                    "consumidor_endereco": "5 de Abril",
+                    "consumidor_estado": "AN",
+                    "consumidor_fone": "",
+                    "consumidor_fone_comercial": null,
+                    "consumidor_nome": "FERNANDO NAKATA", // Cambiado de "FERNANDO TELECONTROL"
+                    "consumidor_numero": "1000", // Cambiado de "1233"
+                    "data_abertura": "17/05/2024",
+                    "data_abertura_atendimento": null,
+                    "data_atendimento_callcenter_resolvido": null,
+                    "data_conserto": null,
+                    "data_digitacao": "17/05/2024",
+                    "data_fabricacao": null,
+                    "data_fechamento": null,
+                    "data_nf": "16/05/2024", // Cambiado de "01/01/2024"
+                    "defeito_constatado": "PROBLEMAS INTERNOS MECANICOS", // Cambiado de null
+                    "defeito_reclamado": "NO ENCIENDE",
+                    "defeito_reclamado_descricao": "problema sinternos", // Cambiado de "No Enciende"
+                    "descricao": "ATORNILLADOR DE IMPACTO INALAMBRICO LI-ION 40v MAX XGT S/BATERIA S/CARGADOR",
+                    "descricao_tipo_atendimento": "Puesta En Marcha", // Cambiado de "Garantia"
+                    "dias_aberto": 12,
+                    "hd_chamado": null,
+                    "idPedido": 49091285,
+                    "local_reparo": null,
+                    "nome": "Musil Comercial", // Cambiado de "test"
+                    "nota_fiscal": "00000000998", // Cambiado de "758441"
+                    "os": 66284227,
+                    "os_reincidente": null,
+                    "referencia": "DUC122",
+                    "revenda": "CEFERINO ARTURO SEPULVEDA TORO", // Cambiado de "JUAN RAMON ASTORGA GARRIDO"
+                    "serie": "S123456789", // Cambiado de "114524521"
+                    "solucao": null,
+                    "status_os": "Aguardando Conserto", // Cambiado de "Aguardando Peças"
+                    "sua_os": "66284227"
+                }
+            ]
         },
-        {
-            pedido: 49090833,
-            data: '2024-04-29 13:16:38.825511-03',
-            cnpj: '76279534-5    ',
-            codigo: 'GAR',
-            codigo_condicao: 'GAR',
-            entrega: null,
-            exportado: null,
-            tipo_frete: null,
-            status_pedido: 1,
-            troca: null,
-            status_descricao: 'Aguardando Exportação',
-            transportadora: null,
-            codigo_interno_transportadora: null,
-            itens: [Array],
-            valor_adicional_fabricante: 0,
-            valor_desconto_fabricante: 0,
-            tipoDocumento: 'NOTA DE VTA INTERNA'
-        }
-        ]
-    },
-
-    obtenerPedidosService:{
- 
-        data: [
-            {
-                "pedido": 48935877,
-                "data": "2024-04-22 16:47:02.223256-03",
-                "cnpj": "76279534-5    ",
-                "codigo": "VEN",
-                "codigo_condicao": "VEN",
-                "entrega": null,
-                "exportado": null,
-                "tipo_frete": null,
-                "status_pedido": 4,
-                "troca": null,
-                "status_descricao": "Faturado Integral",
-                "transportadora": null,
-                "codigo_interno_transportadora": null,
-                "itens": [
-                    {
-                        "pedido_item": 106973043,
-                        "referencia": "629937-8",
-                        "qtde": "1",
-                        "preco": "14462",
-                        "ipi": "0",
-                        "os": "66227517",
-                        "qtde_cancelada": "0",
-                        "qtde_faturada": "1"
-                    }
-                ],
-                "valor_adicional_fabricante": 0,
-                "valor_desconto_fabricante": 0
-            },
-            {
-                "pedido": 48966439,
-                "data": "2024-04-23 12:35:33.380326-03",
-                "cnpj": "768900980     ",
-                "codigo": "VEN",
-                "codigo_condicao": "01",
-                "entrega": null,
-                "exportado": null,
-                "tipo_frete": null,
-                "status_pedido": 1,
-                "troca": null,
-                "status_descricao": "Aguardando Exportação",
-                "transportadora": null,
-                "codigo_interno_transportadora": null,
-                "itens": [
-                    {
-                        "pedido_item": 107024192,
-                        "referencia": "125310-5",
-                        "qtde": "2",
-                        "preco": "1001",
-                        "ipi": "19",
-                        "os": null,
-                        "qtde_cancelada": "0",
-                        "qtde_faturada": "1"
-                    },
-                    {
-                        "pedido_item": 107024195,
-                        "referencia": "187363-2",
-                        "qtde": "1",
-                        "preco": "11617",
-                        "ipi": "19",
-                        "os": null,
-                        "qtde_cancelada": "0",
-                        "qtde_faturada": "1"
-                    },
-                    {
-                        "pedido_item": 107024193,
-                        "referencia": "126289-3",
-                        "qtde": "1",
-                        "preco": "601",
-                        "ipi": "19",
-                        "os": null,
-                        "qtde_cancelada": "0",
-                        "qtde_faturada": "1"
-                    },
-                    {
-                        "pedido_item": 107024194,
-                        "referencia": "163455-1",
-                        "qtde": "1",
-                        "preco": "1111",
-                        "ipi": "19",
-                        "os": null,
-                        "qtde_cancelada": "0",
-                        "qtde_faturada": "1"
-                    }
-                ],
-                "valor_adicional_fabricante": 0,
-                "valor_desconto_fabricante": 0
-            },
-            {
-                "pedido": 49090833,
-                "data": "2024-04-29 13:16:38.825511-03",
-                "cnpj": "76279534-5    ",
-                "codigo": "GAR",
-                "codigo_condicao": "GAR",
-                "entrega": null,
-                "exportado": null,
-                "tipo_frete": null,
-                "status_pedido": 1,
-                "troca": null,
-                "status_descricao": "Aguardando Exportação",
-                "transportadora": null,
-                "codigo_interno_transportadora": null,
-                "itens": [
-                    {
-                        "pedido_item": 107248891,
-                        "referencia": "158472-4",
-                        "qtde": "1",
-                        "preco": "6195",
-                        "ipi": "0",
-                        "os": "66283533",
-                        "qtde_cancelada": "0",
-                        "qtde_faturada": "0"
-                    }
-                ],
-                "valor_adicional_fabricante": 0,
-                "valor_desconto_fabricante": 0
-            },
-            
-        ],
-        status:200
-    },
+        status: 200
+    }
 };
