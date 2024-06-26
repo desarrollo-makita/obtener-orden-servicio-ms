@@ -14,6 +14,8 @@ async function obtenerOrdenServicio(req, res) {
         let objetosUnicos = [];
         let response;
 
+        console.log("1", req.body);
+        console.log("2",data);
         // Recorremos el arreglo de pedidos para obtener las órdenes de servicio
         for (const item of data.pedidos) {
             for (const element of item.itens) {
