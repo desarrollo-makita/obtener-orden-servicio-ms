@@ -78,7 +78,7 @@ async function obtenerOrdenesRut(req, res) {
         for (const entidad of entidadesList) {
             try {
                 entidad.Entidad = entidad.Entidad.replace(/-/g, '');
-                const url = `http://backend2.telecontrol.com.br/homologation-os/ordem/cnpj/${entidad.Entidad}/dataInicio/${dateInicio}/dataFim/${dateFin}`;
+                const url = `http://api2.telecontrol.com.br/os/ordem/cnpj/${entidad.Entidad}/dataInicio/${dateInicio}/dataFim/${dateFin}`;
                 logger.info(`URL :  ${url}`);
 
                 const response = await axios.get(url, {
