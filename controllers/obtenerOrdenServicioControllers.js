@@ -23,8 +23,8 @@ async function obtenerOrdenServicio(req, res) {
                 response = await axios.get(`http://api2.telecontrol.com.br/os/ordem/os/${element.os}`, {
                     headers: {
                         'Content-Type': 'application/json',
-                        'Access-Application-Key': '3d137dea1d13220aa9a10ee57d69f6b30d247f28',
-                        'Access-Env': 'HOMOLOGATION',
+                        'Access-Application-Key': '588b56a33c722da5e49170a311e872d9ee967291',
+                        'Access-Env': 'PRODUCTION',
                         'X-Custom-Header': 'value'
                     }
                 });
