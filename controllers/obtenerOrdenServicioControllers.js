@@ -6,7 +6,6 @@ require('dotenv').config();
 
 async function obtenerOrdenServicio(req, res) {
     try {
-        
         logger.info(`Iniciamos la funcion obtenerOrdenServicio`); 
         const data = req.body;
         const osArray = [];
@@ -14,26 +13,32 @@ async function obtenerOrdenServicio(req, res) {
         let objetosUnicos = [];
         let response;
 
-        console.log("1", req.body);
-        console.log("2",data);
         // Recorremos el arreglo de pedidos para obtener las órdenes de servicio
         for (const item of data.pedidos) {
             for (const element of item.itens) {
-                // Consultamos la orden de servicio en el servicio de telecontrol
-                response = await axios.get(`http://api2.telecontrol.com.br/os/ordem/os/${element.os}`, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Access-Application-Key': '588b56a33c722da5e49170a311e872d9ee967291',
-                        'Access-Env': 'PRODUCTION',
-                        'X-Custom-Header': 'value'
-                    }
-                });
+                try {
+                    // Consultamos la orden de servicio en el servicio de telecontrol
+                    response = await axios.get(`http://api2.telecontrol.com.br/os/ordem/os/${element.os}`, {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Access-Application-Key': '588b56a33c722da5e49170a311e872d9ee967291',
+                            'Access-Env': 'PRODUCTION',
+                            'X-Custom-Header': 'value'
+                        }
+                    });
 
-                // Verificamos si la respuesta contiene datos válidos
-                if (response.data && response.data.os) {
-                    // Agregamos la propiedad idPedido a la orden de servicio
-                    const osArrayWithIdPedido = response.data.os.map(obj => ({ ...obj, idPedido: item.pedido }));
-                    objetosUnicos.push(...osArrayWithIdPedido);
+                   // Verificamos si la respuesta contiene datos válidos
+                    if (response.data && response.data.os) {
+                        // Agregamos la propiedad idPedido a la orden de servicio
+                        const osArrayWithIdPedido = response.data.os.map(obj => ({ ...obj, idPedido: item.pedido }));
+                        objetosUnicos.push(...osArrayWithIdPedido);
+                    }
+                } catch (err) {
+                    if (err.response && err.response.status === 404) {
+                        logger.warn(`Orden de servicio no encontrada: ${element.os}`);
+                    } else {
+                        throw err; // Relanza el error si no es un 404
+                    }
                 }
             }
         }
@@ -54,12 +59,11 @@ async function obtenerOrdenServicio(req, res) {
         logger.info(`Fin de la funcion obtenerOrdenServicio`); 
         
         // Enviamos la respuesta con el arreglo de órdenes de servicio únicas
-        res.status(response.status).json(osArray);
+        res.status(200).json(osArray);
     } catch (error) {
         // Manejamos cualquier error ocurrido durante el proceso
         logger.error(`Error en obtenerOrdenServicio: ${error.message}`);
         res.status(500).json({ error: `Error en el servidor [obtener-orden-servicio-ms] :  ${error.message}`  });
-       
     }
 }
 
