@@ -12,6 +12,9 @@ async function obtenerOrdenServicio(req, res) {
         const osSet = new Set();
         let objetosUnicos = [];
         let response;
+        let link =[];
+        let dataArchivos;
+        let os_anexos = [];
 
         // Recorremos el arreglo de pedidos para obtener las órdenes de servicio
         for (const item of data.pedidos) {
@@ -27,15 +30,20 @@ async function obtenerOrdenServicio(req, res) {
                         }
                     });
 
-                   // Verificamos si la respuesta contiene datos válidos
+                    dataArchivos =  response.data.response;
+                    if (dataArchivos.hasOwnProperty("")) {
+                        os_anexos = dataArchivos[""].os_anexos;
+                    }
+                    
+                    // Verificamos si la respuesta contiene datos válidos
                     if (response.data && response.data.os) {
                         // Agregamos la propiedad idPedido a la orden de servicio
-                        const osArrayWithIdPedido = response.data.os.map(obj => ({ ...obj, idPedido: item.pedido }));
+                        const osArrayWithIdPedido = response.data.os.map(obj => ({ ...obj, idPedido: item.pedido, arregloLink :os_anexos  }));
                         objetosUnicos.push(...osArrayWithIdPedido);
                     }
                 } catch (err) {
                     if (err.response && err.response.status === 404) {
-                        logger.warn(`Orden de servicio no encontrada: ${element.os}`);
+                        logger.info(`Orden de servicio no encontrada: ${element.os}`);
                     } else {
                         throw err; // Relanza el error si no es un 404
                     }
