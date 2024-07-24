@@ -121,8 +121,10 @@ async function obtenerOrdenesRut(req, res) {
             }
         }
 
-        const filtradas = ordenesPendientesList.filter(orden => orden.descricao_tipo_atendimento === "Puesta En Marcha")
-                                               .map(orden => ({ ...orden, idPedido: null }));;
+        const filtradas = ordenesPendientesList.filter(orden => orden.descricao_tipo_atendimento === "Puesta En Marcha" &&
+                                                                orden.status_os !== "Finalizada"
+         )
+                                               .map(orden => ({ ...orden, idPedido: null }));
 
 
         logger.info(`Fin de la función obtenerOrdenesPorRut`);
