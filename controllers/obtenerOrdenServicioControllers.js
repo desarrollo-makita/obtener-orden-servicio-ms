@@ -30,6 +30,8 @@ async function obtenerOrdenServicio(req, res) {
                         }
                     });
 
+                    console.log("responseeeee: " , response);
+
                     dataArchivos =  response.data.response;
                     if (dataArchivos.hasOwnProperty("")) {
                         os_anexos = dataArchivos[""].os_anexos;
