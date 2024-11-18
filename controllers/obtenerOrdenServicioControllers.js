@@ -30,7 +30,7 @@ async function obtenerOrdenServicio(req, res) {
                         }
                     });
 
-                    console.log("responseeeee: " , response);
+                    ("responseeeee: " , response.data);
 
                     dataArchivos =  response.data.response;
                     if (dataArchivos.hasOwnProperty("")) {
