@@ -6,76 +6,85 @@ require('dotenv').config();
 
 async function obtenerOrdenServicio(req, res) {
     try {
-        logger.info(`Iniciamos la funcion obtenerOrdenServicio`); 
-        const data = req.body;
-        const osArray = [];
-        const osSet = new Set();
-        let objetosUnicos = [];
-        let response;
-        let link =[];
-        let dataArchivos;
-        let os_anexos = [];
+        logger.info(`Iniciamos la función obtenerOrdenServicio`);
 
-        // Recorremos el arreglo de pedidos para obtener las órdenes de servicio
-        for (const item of data.pedidos) {
-            for (const element of item.itens) {
+        const { pedidos } = req.body;
+        if (!Array.isArray(pedidos)) {
+            throw new Error("El cuerpo de la solicitud debe contener un arreglo válido de 'pedidos'.");
+        }
+
+        const osSet = new Set();
+        const osArray = [];
+
+        for (const pedido of pedidos) {
+            console.log("pedido : " , pedido.status_descricao);
+            if (pedido.status_descricao !== 'Aguardando Exportação') {
+                continue;
+            }
+
+            const solicitudes = pedido.itens.map(async (element) => {
                 try {
+
+                    console.log("element pedidos os", element.os);
                     // Consultamos la orden de servicio en el servicio de telecontrol
-                    response = await axios.get(`http://api2.telecontrol.com.br/os/ordem/os/${element.os}`, {
+                    const response = await axios.get(`http://api2.telecontrol.com.br/os/ordem/os/${element.os}`, {
                         headers: {
                             'Content-Type': 'application/json',
                             'Access-Application-Key': '588b56a33c722da5e49170a311e872d9ee967291',
                             'Access-Env': 'PRODUCTION',
                             'X-Custom-Header': 'value'
-                        }
+                        },
+                        timeout: 30000 // Timeout de 30 segundos
                     });
 
-                    ("responseeeee: " , response.data);
+                    console.log("response :" , response.data)
+                    // Extraemos datos relevantes de la respuesta
+                    const { response: dataArchivos, os: osData } = response.data || {};
+                    const os_anexos = dataArchivos?.[""]?.os_anexos || [];
 
-                    dataArchivos =  response.data.response;
-                    if (dataArchivos.hasOwnProperty("")) {
-                        os_anexos = dataArchivos[""].os_anexos;
-                    }
-                    
-                    // Verificamos si la respuesta contiene datos válidos
-                    if (response.data && response.data.os) {
-                        // Agregamos la propiedad idPedido a la orden de servicio
-                        const osArrayWithIdPedido = response.data.os.map(obj => ({ ...obj, idPedido: item.pedido, arregloLink :os_anexos  }));
-                        objetosUnicos.push(...osArrayWithIdPedido);
+                    if (osData) {
+                        // Agregamos `idPedido` y `arregloLink` a cada orden de servicio
+                        return osData.map((obj) => ({
+                            ...obj,
+                            idPedido: pedido.pedido,
+                            arregloLink: os_anexos
+                        }));
                     }
                 } catch (err) {
-                    if (err.response && err.response.status === 404) {
+                    if (err.response?.status === 404) {
                         logger.info(`Orden de servicio no encontrada: ${element.os}`);
                     } else {
                         throw err; // Relanza el error si no es un 404
                     }
                 }
+                return [];
+            });
+
+            // Esperamos todas las solicitudes para este pedido
+            const resultados = await Promise.all(solicitudes);
+
+
+            console.log("resultadoooooooos : " , resultados);
+            // Procesamos resultados únicos
+            for (const resultado of resultados.flat()) {
+                if (resultado?.os && !osSet.has(resultado.os)) {
+                    osSet.add(resultado.os);
+                    osArray.push(resultado);
+                }
             }
         }
 
-        // Iteramos sobre cada objeto en el arreglo para eliminar duplicados
-        for (const objeto of objetosUnicos) {
-            // Verificamos si el valor de 'os' ya está en el conjunto
-            if (!osSet.has(objeto.os)) {
-                // Añadimos el valor de 'os' al conjunto
-                osSet.add(objeto.os);
-                // Si no está en el conjunto, añadimos el objeto al arreglo de objetos únicos
-                osArray.push(objeto);
-            }
-        }
-
-        // Depuramos el arreglo de órdenes de servicio
+        // Enviamos la respuesta con las órdenes de servicio únicas
         logger.debug(`osArray: ${JSON.stringify(osArray)}`);
-        logger.info(`Fin de la funcion obtenerOrdenServicio`); 
-        
-        // Enviamos la respuesta con el arreglo de órdenes de servicio únicas
+        logger.info(`Fin de la función obtenerOrdenServicio`);
         res.status(200).json(osArray);
+
     } catch (error) {
-        // Manejamos cualquier error ocurrido durante el proceso
         logger.error(`Error en obtenerOrdenServicio: ${error.message}`);
-        res.status(500).json({ error: `Error en el servidor [obtener-orden-servicio-ms] :  ${error.message}`  });
+        res.status(500).json({ error: `Error en el servidor [obtener-orden-servicio-ms]: ${error.message}` });
     }
 }
+
 
 /**
  * Se obtienen ordenes de servicio utilizando rut de la entidad del servicio tecnico
